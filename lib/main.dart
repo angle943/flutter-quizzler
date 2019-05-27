@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'quiz_brain.dart';
+
+QuizBrain quizBrain = QuizBrain();
+
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -33,11 +37,7 @@ class _QuizPageState extends State<QuizPage> {
     Icons.close,
     color: Colors.red,
   );
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.',
-  ];
+
   int currentQuestion = 0;
 
   List<Icon> scoreKeeper = [];
@@ -54,7 +54,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[currentQuestion],
+                quizBrain.getQuestionText(currentQuestion),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -79,7 +79,13 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  scoreKeeper.add(correctIcon);
+                  bool correctAnswer =
+                      quizBrain.getQuestionAnswer(currentQuestion);
+                  if (correctAnswer == true) {
+                    scoreKeeper.add(correctIcon);
+                  } else {
+                    scoreKeeper.add(incorrectIcon);
+                  }
                   currentQuestion++;
                 });
               },
@@ -100,7 +106,13 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  scoreKeeper.add(incorrectIcon);
+                  bool correctAnswer =
+                      quizBrain.getQuestionAnswer(currentQuestion);
+                  if (correctAnswer == false) {
+                    scoreKeeper.add(correctIcon);
+                  } else {
+                    scoreKeeper.add(incorrectIcon);
+                  }
                   currentQuestion++;
                 });
               },
